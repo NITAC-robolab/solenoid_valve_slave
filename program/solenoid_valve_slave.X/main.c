@@ -1,4 +1,4 @@
-#define FCY 4000000UL /* delay 用 (Fosc/2) */
+#define FCY 40000000UL /* delay 用 (Fosc/2) */
 #include <libpic30.h> /* delay */
 #include <stdlib.h>
 #include <xc.h>
@@ -8,25 +8,7 @@
 #include "dsPIC33FJ128MC802.h"
 #include "general.h"
 #include "config.h"
-
-/*-----------------------------------------------
- *
- * パラメータ
- *
------------------------------------------------*/
-typedef enum
-{
-    PARAM_MAX_PWM1,
-    PARAM_MAX_PWM2,
-} ParamList;
-
-/*-----------------------------------------------
- *
- * 宣言
- *
------------------------------------------------*/
-extern void Initialize();
-void calc_pwm(double pwm[], int32_t param[]);
+#include "setup.h"
 
 /*-----------------------------------------------
  *
@@ -37,43 +19,37 @@ int main(int argc, char **argv)
 {
     /* 初期化 */
     Initialize_Parameters();
-    Initialize();
+    setup_dspic();
+    setup_pin();
+    setup_peripheral_module();
 
-    /* パラメータ読み込み */
-    // int32_t param[MAX_NUM_OF_PARAM];
-    // for (size_t i = 0; i < MAX_NUM_OF_PARAM; ++i)
-    //     param[i] = 0;
-    // load_param(param);
-
-    /* モータ */
-    double pwm[2] = {0, 0};
+    uint8_t value[2] = {0, 0};
 
     while (1)
     {
         /* 受信 */
         Organize_Datas(RxData0, Buffer0, number_of_rxdata0, 0);
-        TxData0[0] = (int8_t)RxData0[0].all_data;
-        TxData0[1] = (int8_t)RxData0[1].all_data;
+        value[0] = RxData0[0].all_data;
+        value[1] = RxData0[1].all_data;
 
-        /* 送信 */
-        Send_StartSignal(EUSART_Write, EUSART_TxInterrupt_Control, U2TXIE);
+        /* 電磁弁を操作 */
+        SOLENOID_VALVE_11 = (value[0] >> 0) & 1;
+        SOLENOID_VALVE_12 = (value[0] >> 1) & 1;
+        SOLENOID_VALVE_13 = (value[0] >> 2) & 1;
+        SOLENOID_VALVE_14 = (value[0] >> 3) & 1;
+        SOLENOID_VALVE_15 = (value[0] >> 4) & 1;
+        SOLENOID_VALVE_16 = (value[0] >> 5) & 1;
+        SOLENOID_VALVE_17 = (value[0] >> 6) & 1;
+        SOLENOID_VALVE_21 = (value[1] >> 0) & 1;
+        SOLENOID_VALVE_22 = (value[1] >> 1) & 1;
+        SOLENOID_VALVE_23 = (value[1] >> 2) & 1;
+        SOLENOID_VALVE_24 = (value[1] >> 3) & 1;
+        SOLENOID_VALVE_25 = (value[1] >> 4) & 1;
+        SOLENOID_VALVE_26 = (value[1] >> 5) & 1;
+        SOLENOID_VALVE_27 = (value[1] >> 6) & 1;
 
         /* 動作周期調整 */
-        __delay_ms(50);
+        __delay_ms(5);
     }
     return (EXIT_SUCCESS);
-}
-
-/*-----------------------------------------------
- *
- * PWM を計算
- *
------------------------------------------------*/
-void calc_pwm(double pwm[], int32_t param[])
-{
-    /* 出力する PWM に上限を設定する */
-    if (fabs(pwm[0]) > param[PARAM_MAX_PWM1])
-        pwm[0] = param[PARAM_MAX_PWM1] * GET_SIGNAL_FLOAT(pwm[0]);
-    if (fabs(pwm[1]) > param[PARAM_MAX_PWM2])
-        pwm[1] = param[PARAM_MAX_PWM2] * GET_SIGNAL_FLOAT(pwm[1]);
 }

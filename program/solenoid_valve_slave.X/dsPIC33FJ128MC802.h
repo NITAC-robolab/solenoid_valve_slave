@@ -1,9 +1,18 @@
+/*-----------------------------------------------
+ *
+ * Last updated : 2020/02/02, 17:48
+ *
+-----------------------------------------------*/
 #ifndef DSPIC33FJ128MC802_H
-#define	DSPIC33FJ128MC802_H
+#define DSPIC33FJ128MC802_H
 
 #include <xc.h>
 
-//Timer settings
+/*-----------------------------------------------
+ *
+ * Timer
+ *
+-----------------------------------------------*/
 #define T1ON T1CONbits.TON
 #define T1CKPS T1CONbits.TCKPS
 #define T2ON T2CONbits.TON
@@ -15,7 +24,25 @@
 #define T5ON T5CONbits.TON
 #define T5CKPS T5CONbits.TCKPS
 
-//UART settings
+/*-----------------------------------------------
+ *
+ * OC
+ *
+-----------------------------------------------*/
+#define OC1M OC1CONbits.OCM
+#define OC1TSEL OC1CONbits.OCTSEL
+#define OC2M OC2CONbits.OCM
+#define OC2TSEL OC2CONbits.OCTSEL
+#define OC3M OC3CONbits.OCM
+#define OC3TSEL OC3CONbits.OCTSEL
+#define OC4M OC4CONbits.OCM
+#define OC4TSEL OC4CONbits.OCTSEL
+
+/*-----------------------------------------------
+ *
+ * UART
+ *
+-----------------------------------------------*/
 #define T1ON T1CONbits.TON
 #define T1CKPS T1CONbits.TCKPS
 #define T2ON T2CONbits.TON
@@ -25,19 +52,23 @@
 #define T4ON T4CONbits.TON
 #define T4CKPS T4CONbits.TCKPS
 #define U1RXISEL U1STAbits.URXISEL
-#define UART1EN  U1MODEbits.UARTEN
-#define U1TXEN   U1STAbits.UTXEN
+#define UART1EN U1MODEbits.UARTEN
+#define U1TXEN U1STAbits.UTXEN
 #define U1OERR U1STAbits.OERR
 #define U1FERR U1STAbits.FERR
-#define U1RXDA   U1STAbits.URXDA
+#define U1RXDA U1STAbits.URXDA
 #define U2RXISEL U2STAbits.URXISEL
-#define UART2EN  U2MODEbits.UARTEN
-#define U2TXEN   U2STAbits.UTXEN
+#define UART2EN U2MODEbits.UARTEN
+#define U2TXEN U2STAbits.UTXEN
 #define U2OERR U2STAbits.OERR
 #define U2FERR U2STAbits.FERR
-#define U2RXDA   U2STAbits.URXDA
+#define U2RXDA U2STAbits.URXDA
 
-//SPI setting
+/*-----------------------------------------------
+ *
+ * SPI
+ *
+-----------------------------------------------*/
 #define SPI1TBF SPI1STATbits.SPITBF
 #define SPI1RBF SPI1STATbits.SPIRBF
 #define SPI1ROV SPI1STATbits.SPIROV
@@ -67,7 +98,11 @@
 #define SPRE_2 SPI2CON2bits.SPRE
 #define SSEN_2 SPI2CON2bits.SSEN
 
-/*I2C setting*/
+/*-----------------------------------------------
+ *
+ * I2C
+ *
+-----------------------------------------------*/
 #define A10M_1 I2C1CONbits.A10M
 #define ACKDT_1 I2C1CONbits.ACKDT
 #define ACKEN_1 I2C1CONbits.ACKEN
@@ -97,12 +132,20 @@
 #define TBF_1 I2C1STATbits.TBF
 #define TRSTAT_1 I2C1STATbits.TRSTAT
 
-//QEI settings
-#define UPDN1  QEI1CONbits.UPDN
-#define UPDN2  QEI2CONbits.UPDN
+/*-----------------------------------------------
+ *
+ * QEI
+ *
+-----------------------------------------------*/
+#define UPDN1 QEI1CONbits.UPDN
+#define UPDN2 QEI2CONbits.UPDN
 
-/*Interrupt*/
-
+/*-----------------------------------------------
+ *
+ * 割り込み
+ *
+-----------------------------------------------*/
+/* 割り込みフラグ */
 #define U1TXIF IFS0bits.U1TXIF
 #define U1RXIF IFS0bits.U1RXIF
 #define U2TXIF IFS1bits.U2TXIF
@@ -119,6 +162,8 @@
 #define T3IF IFS0bits.T3IF
 #define T4IF IFS1bits.T4IF
 #define T5IF IFS1bits.T5IF
+#define CNIF IFS1bits.CNIF /* ピン変化割り込み */
+/* 割り込み許可 */
 #define U1TXIE IEC0bits.U1TXIE
 #define U1RXIE IEC0bits.U1RXIE
 #define U2TXIE IEC1bits.U2TXIE
@@ -135,6 +180,8 @@
 #define T3IE IEC0bits.T3IE
 #define T4IE IEC1bits.T4IE
 #define T5IE IEC1bits.T5IE
+#define CNIE IEC1bits.CNIE /* ピン変化割り込み */
+/* 割り込み優先度 */
 #define INT0IP IPC0bits.INT0IP
 #define U1TXIP IPC3bits.U1TXIP
 #define U1RXIP IPC2bits.U1RXIP
@@ -151,9 +198,13 @@
 #define T3IP IPC2bits.T3IP
 #define T4IP IPC6bits.T4IP
 #define T5IP IPC7bits.T5IP
+#define CNIP IPC4bits.CNIP /* ピン変化割り込み */
 
-
-//Peripheral Pin Select settings
+/*-----------------------------------------------
+ *
+ * PPS（ペリフェラルピンセレクト）
+ *
+-----------------------------------------------*/
 #define RP0IN 0
 #define RP1IN 1
 #define RP2IN 2
@@ -186,17 +237,14 @@
 #define RP13OUT RPOR6bits.RP13R
 #define RP14OUT RPOR7bits.RP14R
 #define RP15OUT RPOR7bits.RP15R
-/*Module*/
 #define U1TXR 3
 #define U2TXR 5
-#define PWM1R 18
-#define OPC1R 18
-#define OPC2R 19
-#define OPC3R 20
-#define OPC4R 21
 #define SDO1R 7
-#define SCK1R_OUT 8
-#define SSR 9
+#define SCKO1R 8
+#define OC1R_ 18 /* 再定義の警告が出るためアンダーバーをつけて対応 */
+#define OC2R_ 19
+#define OC3R_ 20
+#define OC4R_ 21
 #define U1RXR RPINR18bits.U1RXR
 #define U2RXR RPINR19bits.U2RXR
 #define QEA1R RPINR14bits.QEA1R
@@ -204,7 +252,103 @@
 #define QEA2R RPINR16bits.QEA2R
 #define QEB2R RPINR16bits.QEB2R
 #define SDI1R RPINR20bits.SDI1R
-#define SCK1R_IN RPINR20bits.SCK1R
+#define SCKI1R RPINR20bits.SCK1R
 #define SS1R RPINR21bits.SS1R
+
+/*-----------------------------------------------
+ *
+ * IO
+ *
+-----------------------------------------------*/
+#define TRISA0 TRISAbits.TRISA0
+#define TRISA1 TRISAbits.TRISA1
+#define TRISA2 TRISAbits.TRISA2
+#define TRISA3 TRISAbits.TRISA3
+#define TRISA4 TRISAbits.TRISA4
+#define TRISB0 TRISBbits.TRISB0
+#define TRISB1 TRISBbits.TRISB1
+#define TRISB2 TRISBbits.TRISB2
+#define TRISB3 TRISBbits.TRISB3
+#define TRISB4 TRISBbits.TRISB4
+#define TRISB5 TRISBbits.TRISB5
+#define TRISB6 TRISBbits.TRISB6
+#define TRISB7 TRISBbits.TRISB7
+#define TRISB8 TRISBbits.TRISB8
+#define TRISB9 TRISBbits.TRISB9
+#define TRISB10 TRISBbits.TRISB10
+#define TRISB11 TRISBbits.TRISB11
+#define TRISB12 TRISBbits.TRISB12
+#define TRISB13 TRISBbits.TRISB13
+#define TRISB14 TRISBbits.TRISB14
+#define TRISB15 TRISBbits.TRISB15
+#define RA0 PORTAbits.RA0
+#define RA1 PORTAbits.RA1
+#define RA2 PORTAbits.RA2
+#define RA3 PORTAbits.RA3
+#define RA4 PORTAbits.RA4
+#define RB0 PORTBbits.RB0
+#define RB1 PORTBbits.RB1
+#define RB2 PORTBbits.RB2
+#define RB3 PORTBbits.RB3
+#define RB4 PORTBbits.RB4
+#define RB5 PORTBbits.RB5
+#define RB6 PORTBbits.RB6
+#define RB7 PORTBbits.RB7
+#define RB8 PORTBbits.RB8
+#define RB9 PORTBbits.RB9
+#define RB10 PORTBbits.RB10
+#define RB11 PORTBbits.RB11
+#define RB12 PORTBbits.RB12
+#define RB13 PORTBbits.RB13
+#define RB14 PORTBbits.RB14
+#define RB15 PORTBbits.RB15
+#define LATA0 LATAbits.LATA0
+#define LATA1 LATAbits.LATA1
+#define LATA2 LATAbits.LATA2
+#define LATA3 LATAbits.LATA3
+#define LATA4 LATAbits.LATA4
+#define LATB0 LATBbits.LATB0
+#define LATB1 LATBbits.LATB1
+#define LATB2 LATBbits.LATB2
+#define LATB3 LATBbits.LATB3
+#define LATB4 LATBbits.LATB4
+#define LATB5 LATBbits.LATB5
+#define LATB6 LATBbits.LATB6
+#define LATB7 LATBbits.LATB7
+#define LATB8 LATBbits.LATB8
+#define LATB9 LATBbits.LATB9
+#define LATB10 LATBbits.LATB10
+#define LATB11 LATBbits.LATB11
+#define LATB12 LATBbits.LATB12
+#define LATB13 LATBbits.LATB13
+#define LATB14 LATBbits.LATB14
+#define LATB15 LATBbits.LATB15
+
+/*-----------------------------------------------
+ *
+ * CN（ピン変化通知）
+ *
+-----------------------------------------------*/
+#define CN0IE CNEN1bits.CN0IE
+#define CN1IE CNEN1bits.CN1IE
+#define CN2IE CNEN1bits.CN2IE
+#define CN3IE CNEN1bits.CN3IE
+#define CN4IE CNEN1bits.CN4IE
+#define CN5IE CNEN1bits.CN5IE
+#define CN6IE CNEN1bits.CN6IE
+#define CN7IE CNEN1bits.CN7IE
+#define CN11IE CNEN1bits.CN11IE
+#define CN12IE CNEN1bits.CN12IE
+#define CN13IE CNEN1bits.CN13IE
+#define CN14IE CNEN1bits.CN14IE
+#define CN15IE CNEN1bits.CN15IE
+#define CN16IE CNEN2bits.CN16IE
+#define CN21IE CNEN2bits.CN21IE
+#define CN22IE CNEN2bits.CN22IE
+#define CN23IE CNEN2bits.CN23IE
+#define CN24IE CNEN2bits.CN24IE
+#define CN27IE CNEN2bits.CN27IE
+#define CN29IE CNEN2bits.CN29IE
+#define CN30IE CNEN2bits.CN30IE
 
 #endif

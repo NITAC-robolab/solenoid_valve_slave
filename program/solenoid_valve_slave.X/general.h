@@ -4,17 +4,20 @@
 #include <stdbool.h>
 #include <stdint.h>
 #include "Controller_Protocol.h"
+#include "config.h"
 
 /*-----------------------------------------------
  *
  * エラーチェック
  *
 -----------------------------------------------*/
+#if USE_LOAD_PARAM
 #if (number_of_rxdata0 < 4)
 #error "invalid number_of_rxdata0"
 #endif
 #if (number_of_txdata0 < 1)
 #error "invalid number_of_txdata0"
+#endif
 #endif
 
 /*-----------------------------------------------
@@ -50,8 +53,11 @@ void EUSART_Write(unsigned char data);
 void EUSART_TxInterrupt_Control(bool enable_or_disable);
 bool EUSART_ERROR_from_master(void);
 void load_param(int32_t param[]);
+
+#if USE_OPERATE_MOTOR
 void operate_motor(double pwm[]);
 void apply_pwm(double pwm[]);
 void apply_io(double pwm[]);
+#endif
 
 #endif

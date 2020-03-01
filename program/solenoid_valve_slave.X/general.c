@@ -19,12 +19,12 @@ bool g_tx_flag = 1; /* 通信用 */
 -----------------------------------------------*/
 void EUSART_Write(unsigned char data)
 {
-    U2TXREG = data;
+    U1TXREG = data;
 }
 
 void EUSART_TxInterrupt_Control(bool enable_or_disable)
 {
-    U2TXIE = enable_or_disable;
+    U1TXIE = enable_or_disable;
 }
 
 bool EUSART_ERROR_from_master(void)
@@ -51,13 +51,13 @@ void __attribute__((interrupt, no_auto_psv)) _U1RXInterrupt()
                 0, EUSART_ERROR_from_master);
 }
 
-void __attribute__((interrupt, no_auto_psv)) _U2TXInterrupt()
+void __attribute__((interrupt, no_auto_psv)) _U1TXInterrupt()
 {
     g_tx_flag = Send_Till_EndSignal(TxData0,
                                     EUSART_Write,
                                     EUSART_TxInterrupt_Control,
                                     number_of_txdata0, 0);
-    U2TXIF = disable;
+    U1TXIF = disable;
 }
 
 /*-----------------------------------------------
@@ -98,7 +98,7 @@ void load_param(int32_t param[])
         if (g_tx_flag)
         {
             TxData0[0] = i;
-            Send_StartSignal(EUSART_Write, EUSART_TxInterrupt_Control, U2TXIE);
+            Send_StartSignal(EUSART_Write, EUSART_TxInterrupt_Control, U1TXIE);
         }
 
         __delay_ms(50);
@@ -110,6 +110,7 @@ void load_param(int32_t param[])
  * モータ関連
  *
 -----------------------------------------------*/
+#if USE_OPERATE_MOTOR
 /* モータを操作する */
 void operate_motor(double pwm[])
 {
@@ -167,3 +168,4 @@ void apply_io(double pwm[])
         MOTOR_B2 = ON;
     }
 }
+#endif

@@ -1,17 +1,35 @@
 #ifndef CONFIG_H
 #define CONFIG_H
 
-/* debug */
-#define debug_LED1 LATBbits.LATB3
-#define debug_LED2 LATBbits.LATB2
+#define USE_LOAD_PARAM false
+#define USE_OPERATE_MOTOR false
 
-/* OC */
-#define OC_PERIOD 0x0800
+/*-----------------------------------------------
+ *
+ * 電磁弁
+ *
+-----------------------------------------------*/
+#define SOLENOID_VALVE_11 LATB12
+#define SOLENOID_VALVE_12 LATB11
+#define SOLENOID_VALVE_13 LATB10
+#define SOLENOID_VALVE_14 LATB9
+#define SOLENOID_VALVE_15 LATB8
+#define SOLENOID_VALVE_16 LATB7
+#define SOLENOID_VALVE_17 LATB6
+#define SOLENOID_VALVE_21 LATB2
+#define SOLENOID_VALVE_22 LATB3
+#define SOLENOID_VALVE_23 LATA2
+#define SOLENOID_VALVE_24 LATA3
+#define SOLENOID_VALVE_25 LATB4
+#define SOLENOID_VALVE_26 LATA4
+#define SOLENOID_VALVE_27 LATB5
 
-/* motor ( 右ねじの方向が正転になるように選ぶ ) */
-#define MOTOR_F1 LATAbits.LATA2
-#define MOTOR_B1 LATBbits.LATB12
-#define MOTOR_F2 LATAbits.LATA3
-#define MOTOR_B2 LATBbits.LATB13
+/*-----------------------------------------------
+ *
+ * デバッグ
+ *
+-----------------------------------------------*/
+#define DEBUG_LED_1 LATA0
+#define DEBUG_LED_2 LATA1
 
 #endif
